@@ -5,9 +5,7 @@ import equipments.Equipment;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class House {
@@ -19,6 +17,7 @@ public class House {
     private static final String STRING_MENU_4 = "Press 4 to add appliances";
     private static final String STRING_MENU_5 = "Press 5 to look all appliances ";
     private static final String STRING_MENU_6 = "Press 6 to delete one appliance";
+    private  static  final String STRING_MENU_7 ="Press 7 to sort appliances by power";
     private static final String STRING_MENU_0 = "Press 0 to exit";
 
     public House() {
@@ -49,6 +48,7 @@ public class House {
         System.out.println(STRING_MENU_4);
         System.out.println(STRING_MENU_5);
         System.out.println(STRING_MENU_6);
+        System.out.println(STRING_MENU_7);
         System.out.println(STRING_MENU_0);
     }
 
@@ -86,7 +86,7 @@ public class House {
         Scanner sc = new Scanner(System.in);
         String str = sc.next();
         Appliance appliance = new Appliance(str);
-        System.out.println("Enter name of appliances:");
+        System.out.println("Enter a name of appliances:");
         str = sc.next();
         appliance.setNameAppliances(str);
         System.out.println("Enter power of appliances:");
@@ -127,7 +127,7 @@ public class House {
     private void consumedPower() {
         List<Appliance> helpList;
         int conPower = 0;
-        helpList = appliances.stream().filter(obj -> (obj.isInOff())).collect(Collectors.toList());
+        helpList = appliances.stream().filter(Appliance::isInOff).collect(Collectors.toList());
         if (!helpList.isEmpty()) {
             for (Appliance obj : helpList) {
                 conPower += obj.getPower();
@@ -148,13 +148,16 @@ public class House {
             a.set(true);
         }
     }
+    private void sortAppliances() {
+        appliances.sort((Comparator.comparingInt(Appliance::getPower)));
+    }
 
-    private void printInApplisnces() {
-        List<Appliance> listhelp = appliances.stream().filter(obj -> obj.isInOff()).collect(Collectors.toList());
+    private void printInAppliances() {
+        List<Appliance> listHelp = appliances.stream().filter(Appliance::isInOff).collect(Collectors.toList());
         /*for (Appliance a : listhelp) {
             System.out.println(a.getNameAppliances());
         }*/
-        listhelp.forEach(it -> System.out.println(it.getNameAppliances()));
+        listHelp.forEach(it -> System.out.println(it.getNameAppliances()));
     }
 
     public void workWithAppliances() {
@@ -172,7 +175,7 @@ public class House {
                     break;
                 }
                 case 3: {
-                    printInApplisnces();
+                    printInAppliances();
                     break;
                 }
                 case 4: {
@@ -187,10 +190,17 @@ public class House {
                     deleteAppliances();
                     break;
                 }
+                case 7:{
+                    sortAppliances();
+                    break;
+                }
                 case 0: {
                     return;
                 }
+                default:
+                    throw new IllegalStateException("Unexpected value: " + x);
             }
         }
     }
+
 }
