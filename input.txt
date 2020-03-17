@@ -1,0 +1,6 @@
+TV White 1500
+Kettle Black 400
+Microwave Green 550
+Meat_grinder Blue 600
+Washer Green 2000
+Refrigerator White 3100
